@@ -1,5 +1,6 @@
 package com.wyy.demoshiro.config;
 
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,9 @@ public class ShiroConfig {
 
     @Bean
     public UserRealm userRealm() {
-        return new UserRealm();
+        UserRealm userRealm = new UserRealm();
+        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        return userRealm;
     }
 
     @Bean
@@ -49,4 +52,14 @@ public class ShiroConfig {
 
         return shiroFilterFactoryBean;
     }
+
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
+        matcher.setHashAlgorithmName("SHA-256");  // 设置哈希算法（例如 SHA-256）
+        matcher.setHashIterations(1024);          // 设置哈希迭代次数
+        matcher.setStoredCredentialsHexEncoded(true);  // 密码是否以十六进制编码存储
+        return matcher;
+    }
+
 }

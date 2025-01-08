@@ -1,8 +1,8 @@
 package com.wyy.demoshiro;
 
 import com.wyy.demoshiro.service.SysUserService;
+import com.wyy.demoshiro.service.impl.SysUserServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -10,11 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 class DemoShiroApplicationTests {
 
     @Autowired
-    SysUserService SysUserService;
+    SysUserService sysUserService;
 
     @Test
     void contextLoads() {
-        System.out.println(SysUserService.getUserById(1L));
+        System.out.println(sysUserService.getUserByUserName("john_doe"));
     }
 
 }

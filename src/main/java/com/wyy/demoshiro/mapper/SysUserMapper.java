@@ -19,4 +19,6 @@ public interface SysUserMapper {
     void update(SysUser sysUser);
 
     void delete(Long id);
+
+    SysUser findByUsername (String username);
 }
