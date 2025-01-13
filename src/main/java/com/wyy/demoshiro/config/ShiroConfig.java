@@ -1,8 +1,10 @@
 package com.wyy.demoshiro.config;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,19 +36,12 @@ public class ShiroConfig {
 
         // 配置过滤器链
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        // 配置静态资源过滤：不需要认证
-        filterChainDefinitionMap.put("/user/**", "authc");
-//        // 配置登录页面：不需要认证
-//        filterChainDefinitionMap.put("/login", "anon");
-//        // 配置登出页面：登出
-//        filterChainDefinitionMap.put("/logout", "logout");
-//        // 配置所有/admin/**路径需要admin角色
-//        filterChainDefinitionMap.put("/admin/**", "roles[admin]");
-//        // 配置所有/user/**路径需要认证
-//        filterChainDefinitionMap.put("/user/**", "authc");
-//        // 其他路径都需要认证
-//        filterChainDefinitionMap.put("/**", "authc");
+        // 配置静态资源过滤：需要登录认证
+
         shiroFilterFactoryBean.setLoginUrl("/tologin");
+        filterChainDefinitionMap.put("/user/add", "authc");
+        filterChainDefinitionMap.put("/user/update", "perms[edit_profile]");
+//        filterChainDefinitionMap.put("/user/add", "roles[Admin]");
         // 将filterChainDefinitionMap设置到ShiroFilterFactoryBean
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
@@ -60,6 +55,13 @@ public class ShiroConfig {
         matcher.setHashIterations(1024);          // 设置哈希迭代次数
         matcher.setStoredCredentialsHexEncoded(true);  // 密码是否以十六进制编码存储
         return matcher;
+    }
+
+    @Bean
+    public SessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setGlobalSessionTimeout(15000);  // 30分钟超时
+        return sessionManager;
     }
 
 }

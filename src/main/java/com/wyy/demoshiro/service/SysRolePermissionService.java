@@ -20,4 +20,7 @@ public interface SysRolePermissionService {
     // 根据权限 ID 查找角色
    
     public List<SysRolePermission> getPermissionRoles(Long permissionId);
+
+    // 根据角色 查找权限
+    public List<String> getPermissonByRole(String roleName) ;
 }

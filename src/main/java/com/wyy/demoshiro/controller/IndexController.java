@@ -5,6 +5,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,10 +41,12 @@ public class IndexController {
 
     @RequestMapping("/login")
     public String login (String username, String password,Model model) {
-        Subject subject = SecurityUtils.getSubject();
+        Subject currentUser = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
-            subject.login(token);
+            currentUser.login(token);
+            Session session = currentUser.getSession();
+            session.setTimeout(15000);  // 设置会话过期时间
             return "index";
         } catch (UnknownAccountException e) {
             model.addAttribute("msg","用户名1错误");

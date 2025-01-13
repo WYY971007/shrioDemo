@@ -22,4 +22,11 @@
         SELECT * FROM sys_role_permission WHERE permission_id = #{permissionId}
     </select>
 
+    <select id="getPermissonByRole" resultType="string">
+    SELECT p.permission_name
+    FROM sys_role r
+    JOIN sys_role_permission rp ON r.id = rp.role_id
+    JOIN sys_permission p ON rp.permission_id = p.id
+    WHERE r.id = #{id};
+    </select>
 </mapper>

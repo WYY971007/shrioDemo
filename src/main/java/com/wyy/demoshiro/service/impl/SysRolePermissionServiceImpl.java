@@ -38,4 +38,9 @@ public class SysRolePermissionServiceImpl implements SysRolePermissionService {
     public List<SysRolePermission> getPermissionRoles(Long permissionId) {
         return sysRolePermissionMapper.findByPermissionId(permissionId);
     }
+
+    @Override
+    public List<String> getPermissonByRole(String id) {
+        return sysRolePermissionMapper.getPermissonByRole(id);
+    }
 }
